@@ -33,6 +33,14 @@ router.get('/product-edit/:id',(req, res, next)=> {
     res.render('product-edit',{ product: product});
 });
 
+//Delete product 
+router.get('/product-delete/:id',(req,res,next)=> {
+    let prodId = req.params.id | 0;
+    let deleteProd =myProducts.splice(myProducts.findIndex(p => p.id == prodId),1);
+    //can also do  myProducts = myProducts.filter(p => p.id !== prodId);  this will exculde the item that you are looking for 
+    res.render('success',{product : deleteProd[0]})
+})
+
 //Post New Product
 router.post('/product-create', upload.single('imageUpload'), (req,res,next)=>{
     myProducts.push({
@@ -45,7 +53,7 @@ router.post('/product-create', upload.single('imageUpload'), (req,res,next)=>{
     res.redirect('/products')
 })
 
-//Edit Product
+//Edit Product     post is when a user is iputing information and your are going to give them some information 
 router.post('/product-edit/:id', upload.single('imageUpload'), (req,res,next)=>{
     
     //find product in array
@@ -62,7 +70,7 @@ router.post('/product-edit/:id', upload.single('imageUpload'), (req,res,next)=>{
     res.redirect('/products')
 })
 
-//Product details page
+//Product details page     get is when you are sending the user to a new page 
 router.get('/:id',function(req, res, next) {
     let prodId = req.params.id | 0;
     let prod = myProducts.find(product=> product.id === prodId);
